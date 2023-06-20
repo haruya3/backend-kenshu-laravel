@@ -2,7 +2,36 @@ version: '3.8'
 
 services:
   laravel:
+    container_name: laravel
     build:
-      context: ./docker/laravel
+      context: docker/laravel
     volumes:
-      - ./src/:/laravel
+      - ./src:/laravel
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./docker/nginx
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./src:/laravel
+    depends_on:
+      - laravel
+
+  MySQL:
+    container_name: MySQL
+    image: mysql:8.0
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - mysql-volume:/var/lib/mysql
+
+volumes:
+  mysql-volume:
