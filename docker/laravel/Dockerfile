@@ -4,6 +4,8 @@ ENV TZ Asia/Tokyo
 
 RUN apt-get update && \
 	apt-get install -y git unzip libzip-dev libicu-dev libonig-dev && \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug && \
 	docker-php-ext-install intl pdo_mysql zip bcmath
 
 COPY ./php.development.ini /usr/local/etc/php/php.ini
