@@ -71,7 +71,7 @@ class User extends Authenticatable
         ];
 
         $validatedUserParams = Validator::make($nonValidatedUserParamsbefore, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', Rule::unique(User::class)],
             'email' => [
                 'required',
                 'string',
