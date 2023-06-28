@@ -3,6 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Rules\EmailValidationRule;
+use App\Models\Rules\NameValidationRules;
+use App\Models\Rules\ProfileIMageUrlValidationRules;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,10 +52,18 @@ class User extends Authenticatable
 
 
     use \App\Models\Rules\PasswordValidationRules;
+    use NameValidationRules;
+    use EmailValidationRule;
+    use ProfileIMageUrlValidationRules;
+
     /**
-     * @param array $input
+     * @param string $name
+     * @param string $email
+     * @param string $password
+     * @param string $password_confirmation
+     * @param string $profile_image_url
      * @return \App\Entity\User
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws
      */
     public static function buildValidatedUserParams(
         string $name,
@@ -71,16 +82,10 @@ class User extends Authenticatable
         ];
 
         $validatedUserParams = Validator::make($nonValidatedUserParamsbefore, [
-            'name' => ['required', 'string', 'max:255', Rule::unique(User::class)],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(User::class),
-            ],
+            'name' => self::nameRules(),
+            'email' => self::emailRules(),
             'password' => self::passwordRules(),
-            'profile_image_url' => ['required', 'string', 'max: 500'],
+            'profile_image_url' => self::profileImageUrlRules(),
         ])->validate();
 
         return new \App\Entity\User(
