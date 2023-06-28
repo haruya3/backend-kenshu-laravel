@@ -1,8 +1,9 @@
 <?php
-namespace App\Services;
+namespace App\Services\User;
 
 use App\Models\User;
-use App\Repositries\UserRepoInterface;
+use App\Repositries\User\UserRepoInterface;
+use App\Services\StoreFileService;
 
 class CreateNewUserService implements CreateNewUserServiceInterface
 {

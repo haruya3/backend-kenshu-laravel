@@ -3,7 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use App\Services\CreateNewUserServiceInterface;
+use App\Services\User\CreateNewUserServiceInterface;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers

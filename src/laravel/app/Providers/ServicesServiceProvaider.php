@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Repositries\UserRepoInterface;
-use App\Services\CreateNewUserService;
-use App\Services\CreateNewUserServiceInterface;
+use App\Repositries\User\UserRepoInterface;
+use App\Services\User\CreateNewUserService;
+use App\Services\User\CreateNewUserServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class ServicesServiceProvaider extends ServiceProvider

@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositries;
+namespace App\Repositries\User;
 
-use \App\Models\User;
+use App\Models\User;
 
 class UserRepository implements UserRepoInterface
 {
