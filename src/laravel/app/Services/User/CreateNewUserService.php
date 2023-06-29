@@ -24,7 +24,7 @@ class CreateNewUserService implements CreateNewUserServiceInterface
         $profile_image_url = StoreFileService::run($input['profile-image']);
 
         try {
-            return $this->userRepo::create(User::buildValidatedUserParams(
+            return $this->userRepo->create(User::buildValidatedUserParams(
                 name: $input['name'],
                 email: $input['email'],
                 password: $input['password'],
