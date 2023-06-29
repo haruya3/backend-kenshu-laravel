@@ -7,6 +7,7 @@ services:
       context: docker/laravel
     volumes:
       - ./src:/laravel
+      - ./docker/laravel/laravel_error.log:/usr/local/etc/php/log/php_errors.log
 
   nginx:
     container_name: nginx
