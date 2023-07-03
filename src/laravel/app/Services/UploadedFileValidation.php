@@ -5,7 +5,7 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 
 
-class UplodedFileValidation
+class UploadedFileValidation
 {
     const EXPECTED_FILE_MIME_TYPE_LIST = [
         'image/jpg',
@@ -15,12 +15,15 @@ class UplodedFileValidation
 
     /**
      * @param UploadedFile $uploadedFile
+     * @return bool
      * @throws \InvalidArgumentException
      */
     public static function validate(UploadedFile $uploadedFile)
     {
         if(self::is_not_expected_mime_type($uploadedFile->getPathname())) throw new \InvalidArgumentException('uploded file is not expected extention');
         if($uploadedFile->getError() !== 0) throw new \InvalidArgumentException($uploadedFile->getErrorMessage());
+
+        return true;
     }
 
     /**

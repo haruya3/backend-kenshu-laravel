@@ -20,10 +20,56 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'profile_image_url' => 'public/image/user_profile/kjfoewa.png',
         ];
+    }
+
+    /**
+     * @return Factory
+     */
+    public function normalUser(): Factory
+    {
+        return $this->state(fn () => [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            'password_confirmation' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            'profile_image_url' => 'public/image/user_profile/kjfoewa.png',
+        ]);
+    }
+
+    /**
+     * @return Factory
+     */
+    public function nameIsEmpty(): Factory
+    {
+        return $this->state(fn (array $atrtributes) => [
+            'name' => '',
+            'password_confirmation' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+        ]);
+    }
+
+    /**
+     * @return Factory
+     */
+    public function forNameIsDuplicate(): Factory
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' =>  'test_nagai',
+        ]);
+    }
+
+    /**
+     * @return Factory
+     */
+    public function nameIsOverMaxCharacters(): Factory
+    {
+        var_dump(fake()->realTextBetween(51, 60));
+        return $this->state(fn (array $attributes) => [
+           'name' => fake()->realTextBetween(51, 60),
+            'password_confirmation' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+        ]);
     }
 
     /**
