@@ -6,11 +6,13 @@ use Illuminate\Validation\Rule;
 
 trait NameValidationRules
 {
+    const MAX_CHARACTERS = 50;
     /**
      * @return array
      */
     protected static function nameRules(): array
     {
-        return [ 'required', 'string', 'max:255', Rule::unique(User::class), ];
+        $maxCharacters = self::MAX_CHARACTERS;
+        return [ 'required', 'string', "max:{$maxCharacters}", Rule::unique(User::class)];
     }
 }

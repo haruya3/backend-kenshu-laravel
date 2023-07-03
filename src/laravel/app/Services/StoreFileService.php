@@ -12,8 +12,9 @@ class StoreFileService
      */
     public static function run(UploadedFile $uploadedFile): string
     {
+
         /** @throws \InvalidArgumentException */
-        UplodedFileValidation::validate($uploadedFile);
+        UploadedFileValidation::validate($uploadedFile);
 
         $storePath = self::createStorePath($uploadedFile->getClientOriginalName(), $uploadedFile->getClientOriginalExtension());
         $uploadedFile->storeAs($storePath);
