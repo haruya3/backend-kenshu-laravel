@@ -15,8 +15,9 @@
         <a href="/register">ユーザ登録</a>
     </header>
     <form action="/login" method="post">
+        @csrf
         <label for="email">email<br/>
-            <input type="email" name="email" required>
+            <input type="email" name="email" value="{{ old('email') }}" required>
         </label><br/>
         <label for="password">password<br/>
             <input type="password" name="password" required>
