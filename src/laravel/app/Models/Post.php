@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PostModel extends Model
+class Post extends Model
 {
     use HasFactory;
 
@@ -16,4 +17,9 @@ class PostModel extends Model
         'thumnail_url',
         'user_id',
     ];
+
+    public function users(): BelongsTo
+    {
+        return $this->belongsTo('\App\Models\User');
+    }
 }

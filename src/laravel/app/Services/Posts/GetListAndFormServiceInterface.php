@@ -1,12 +1,12 @@
 <?php
 namespace App\Services\Posts;
 
-use App\Models\Post;
+use App\Dto\GetListAndFormServiceDto;
 
-interface GetListAndFormInterface
+interface GetListAndFormServiceInterface
 {
     /**
-     * @return Post
+     * @return GetListAndFormServiceDto
      */
-    public function run(): Post;
+    public function run(): GetListAndFormServiceDto;
 }

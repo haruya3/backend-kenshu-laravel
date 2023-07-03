@@ -1,35 +1,34 @@
 <?php
 namespace App\Services\Posts;
 
+use App\Dto\GetListAndFormServiceDto;
 use App\Models\Post;
-use App\Repositries\Posts\PostRepository;
 use App\Repositries\Posts\PostRepositoryInterface;
+use App\Repositries\User\UserRepoInterface;
+use Illuminate\Support\Facades\Auth;
 
-class GetListAndFormService implements GetListAndFormInterface
+class GetListAndFormService implements GetListAndFormServiceInterface
 {
+    private readonly UserRepoInterface $userRepo;
     private readonly PostRepositoryInterface $postRepository;
-    public function __construct(PostRepositoryInterface $postRepository)
+    public function __construct(UserRepoInterface $userRepo, PostRepositoryInterface $postRepository)
     {
         $this->postRepository = $postRepository;
+        $this->userRepo = $userRepo;
     }
 
-    public function run(): Post
+
+    public function run(): GetListAndFormServiceDto
     {
-        $postItems = $this->postRepository->getPosts()->all();
-        $posts = array_map(function ($postItem) {
-                return new \App\Entity\Post(
-                    id: $postItem->getAttribute('id'),
-                    title: $postItem->getAttribute('title'),
-                    content: $postItem->getAttribute('content'),
-                    thumnail_url: $postItem->getAttribute('thumnail_url'),
-                    user_id: $postItem->getAttribute('user_id'),
-                );
-            }, $postItems;
+        $user = $this->userRepo->find(Auth::id());
 
+        $posts = $this->postRepository->getAll();
 
-//        foreach ($items->getPosts() as $item){
-//            $item->
-//        }
-        return new Post;
+        //postsに紐づく、tags, imagesのレコードを取得する。
+
+        return new GetListAndFormServiceDto(
+            user: $user,
+            posts: $posts,
+        );
     }
 }

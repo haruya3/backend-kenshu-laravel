@@ -15,4 +15,21 @@ class UserRepository implements UserRepoInterface
             get_object_vars($user)
         );
     }
+
+    /**
+     * @param int $id
+     * @return \App\Entity\User
+     */
+    public function find(int $id): \App\Entity\User
+    {
+        $user = User::find($id)->toArray();
+
+        return new \App\Entity\User(
+            id: $user['id'],
+            name: $user['name'],
+            email: $user['email'],
+            password: '',
+            profile_image_url: $user['profile_image_url'],
+        );
+    }
 }
