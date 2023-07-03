@@ -18,7 +18,7 @@ class UploadedFileValidation
      * @return bool
      * @throws \InvalidArgumentException
      */
-    public static function validate(UploadedFile $uploadedFile)
+    public static function validate(UploadedFile $uploadedFile): bool
     {
         if(self::is_not_expected_mime_type($uploadedFile->getPathname())) throw new \InvalidArgumentException('uploded file is not expected extention');
         if($uploadedFile->getError() !== 0) throw new \InvalidArgumentException($uploadedFile->getErrorMessage());
