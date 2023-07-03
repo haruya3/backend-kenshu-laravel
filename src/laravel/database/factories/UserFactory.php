@@ -53,19 +53,8 @@ class UserFactory extends Factory
     /**
      * @return Factory
      */
-    public function forNameIsDuplicate(): Factory
-    {
-        return $this->state(fn (array $attributes) => [
-            'name' =>  'test_nagai',
-        ]);
-    }
-
-    /**
-     * @return Factory
-     */
     public function nameIsOverMaxCharacters(): Factory
     {
-        var_dump(fake()->realTextBetween(51, 60));
         return $this->state(fn (array $attributes) => [
            'name' => fake()->realTextBetween(51, 60),
             'password_confirmation' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',

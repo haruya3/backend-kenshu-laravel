@@ -75,22 +75,6 @@ class CreateUserTest extends TestCase
         );
     }
 
-    public function test_User_buildValidationUserParams__ユーザの名前が重複する時、ValidationExceptionをthrowすること()
-    {
-        $this->expectException(ValidationException::class);
-
-        //重複させるユーザ情報を作成
-        $user = UserFactory::new()->forNameIsDuplicate()->create();
-
-        User::buildValidatedUserParams(
-            name: $user->getAttributeValue('name'),
-            email: $user->getAttributeValue('email'),
-            password: $user->getAttributeValue('password'),
-            password_confirmation: $user->getAttributeValue('password'),
-            profile_image_url: $user->getAttributeValue('profile_image_url'),
-        );
-    }
-
     use NameValidationRules;
     public function test_User_buildValidationUserParams__ユーザの名前が最大値を超えている時、ValidationExceptionをthrowすること()
     {
@@ -106,6 +90,22 @@ class CreateUserTest extends TestCase
             password: $userOnNameEmpty->getAttributeValue('password'),
             password_confirmation: $userOnNameEmpty->getAttributeValue('password_confirmation'),
             profile_image_url: $userOnNameEmpty->getAttributeValue('profile_image_url'),
+        );
+    }
+
+    public function test_User_buildValidationUserParams__ユーザの名前が重複する時、ValidationExceptionをthrowすること()
+    {
+        $this->expectException(ValidationException::class);
+
+        //重複させるユーザ情報を作成
+        $user = UserFactory::new()->create();
+
+        User::buildValidatedUserParams(
+            name: $user->getAttributeValue('name'),
+            email: $user->getAttributeValue('email'),
+            password: $user->getAttributeValue('password'),
+            password_confirmation: $user->getAttributeValue('password'),
+            profile_image_url: $user->getAttributeValue('profile_image_url'),
         );
     }
 
