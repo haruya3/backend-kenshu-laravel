@@ -11,6 +11,6 @@ trait EmailValidationRule
      */
     protected static function emailRules(): array
     {
-        return ['required', 'string', 'email', 'max:255', Rule::unique(User::class),];
+        return ['required', 'string', 'email', 'max:255', Rule::unique(User::class)];
     }
 }

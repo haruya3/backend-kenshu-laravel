@@ -13,6 +13,6 @@ trait NameValidationRules
     protected static function nameRules(): array
     {
         $maxCharacters = self::MAX_CHARACTERS;
-        return [ 'required', 'string', "max:{$maxCharacters}", Rule::unique(User::class), ];
+        return [ 'required', 'string', "max:{$maxCharacters}", Rule::unique(User::class)];
     }
 }
