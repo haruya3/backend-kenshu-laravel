@@ -28,20 +28,6 @@ class UserFactory extends Factory
     /**
      * @return Factory
      */
-    public function normalUser(): Factory
-    {
-        return $this->state(fn () => [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'password_confirmation' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'profile_image_url' => 'public/image/user_profile/kjfoewa.png',
-        ]);
-    }
-
-    /**
-     * @return Factory
-     */
     public function nameIsEmpty(): Factory
     {
         return $this->state(fn (array $atrtributes) => [

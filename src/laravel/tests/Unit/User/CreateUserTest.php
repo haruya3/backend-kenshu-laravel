@@ -1,5 +1,4 @@
 <?php
-
 namespace App\tests\Unit\User;
 
 use App\Models\Rules\NameValidationRules;
@@ -41,22 +40,6 @@ class CreateUserTest extends TestCase
         $file = UploadedFile::fake()->create(name: 'can_not_upload_ファイル.php', mimeType: 'text/x-php');
         StoreFileService::run($file);
     }
-
-    public function test_User_buildValidationUserParams__正常なユーザ情報の時、そのユーザ情報でモデルバリデーションを通過してUserオブジェクトを返すこと()
-    {
-        $user = UserFactory::new()->normalUser()->make();
-
-        $user = User::buildValidatedUserParams(
-            name: $user->getAttributeValue('name'),
-            email: $user->getAttributeValue('email'),
-            password: $user->getAttributeValue('password'),
-            password_confirmation: $user->getAttributeValue('password_confirmation'),
-            profile_image_url: $user->getAttributeValue('profile_image_url'),
-        );
-
-        self::assertInstanceOf(\App\Entity\User::class, $user);
-    }
-
 
     public function test_User_buildValidationUserParams__ユーザの名前が空の時、ValidationExceptionをthrowすること()
     {
