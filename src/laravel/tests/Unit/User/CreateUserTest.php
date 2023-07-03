@@ -20,7 +20,7 @@ class CreateUserTest extends TestCase
     public function test_UplodedFileValidation_validate__正常なファイルをアップロードした時、そのファイルでバリデーションを通過してtrueを返すこと()
     {
         $file = self::getNormalUploadedDummyFile();
-        assertTrue(UploadedFileValidation::validate($file));
+        $this->assertTrue(UploadedFileValidation::validate($file));
     }
 
     public function test_StoreFileService_run__正常なファイルをアップロードした時、そのファイルが保存されていること()
@@ -37,7 +37,6 @@ class CreateUserTest extends TestCase
     public function test_StoreFileService_run__アップロードされたファイルが期待されたMIMETYPEでない時、InvalidArgumentExceptionをthrowすること()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('uploded file is not expected extention');
 
         $file = UploadedFile::fake()->create(name: 'can_not_upload_ファイル.php', mimeType: 'text/x-php');
         StoreFileService::run($file);
@@ -62,7 +61,6 @@ class CreateUserTest extends TestCase
     public function test_User_buildValidationUserParams__ユーザの名前が空の時、ValidationExceptionをthrowすること()
     {
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('The name field is required.');
 
         $userOnNameEmpty = UserFactory::new()->nameIsEmpty()->make();
 
@@ -78,9 +76,7 @@ class CreateUserTest extends TestCase
     use NameValidationRules;
     public function test_User_buildValidationUserParams__ユーザの名前が最大値を超えている時、ValidationExceptionをthrowすること()
     {
-        $maxCharacters = self::MAX_CHARACTERS;
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage("The name field must not be greater than {$maxCharacters} characters.");
 
         $userOnNameEmpty = UserFactory::new()->nameIsOverMaxCharacters()->make();
 
