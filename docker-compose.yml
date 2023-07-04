@@ -8,6 +8,8 @@ services:
     volumes:
       - ./src:/laravel
       - ./docker/laravel/laravel_error.log:/usr/local/etc/php/log/php_errors.log
+    depends_on:
+      - mysql
 
   nginx:
     container_name: nginx
@@ -20,9 +22,10 @@ services:
     depends_on:
       - laravel
 
-  MySQL:
-    container_name: MySQL
-    image: mysql:8.0
+  mysql:
+    container_name: mysql
+    build:
+      context: docker/mysql
     ports:
       - '3306:3306'
     environment:
