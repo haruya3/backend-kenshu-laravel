@@ -17,6 +17,7 @@
 
     <div>
         <form action='/posts' method='post' enctype="multipart/form-data">
+            @csrf
             <label>
                 タイトル<br/>
                 <input name='title' type='text' required>
