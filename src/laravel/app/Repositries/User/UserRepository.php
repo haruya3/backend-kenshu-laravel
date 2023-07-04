@@ -22,14 +22,14 @@ class UserRepository implements UserRepoInterface
      */
     public function find(int $id): \App\Entity\User
     {
-        $user = User::find($id)->toArray();
+        $user = User::find($id);
 
         return new \App\Entity\User(
-            id: $user['id'],
-            name: $user['name'],
-            email: $user['email'],
+            id: $user->id,
+            name: $user->name,
+            email: $user->email,
             password: '',
-            profile_image_url: $user['profile_image_url'],
+            profile_image_url: $user->profile_image_url,
         );
     }
 }
