@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositries\Posts\ImageRepositoryInterface;
 use App\Repositries\Posts\PostRepositoryInterface;
+use App\Repositries\Tags\TagrepositoryInterface;
 use App\Repositries\User\UserRepoInterface;
 use App\Services\Posts\GetListAndFormServiceInterface;
 use App\Services\Posts\GetListAndFormService;
@@ -30,6 +32,8 @@ class ServicesServiceProvaider extends ServiceProvider
                 return new GetListAndFormService(
                     $app->make(UserRepoInterface::class),
                     $app->make(PostRepositoryInterface::class),
+                    $app->make(ImageRepositoryInterface::class),
+                    $app->make(TagrepositoryInterface::class),
                 );
             });
     }

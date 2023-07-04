@@ -12,15 +12,15 @@ class PostRepository implements PostRepositoryInterface
      */
     public function getAll(): array
     {
-        $postItems = Post::all()->all();
+        $postItems = Post::all()->toArray();
 
         return array_map(function ($postItem) {
             return new \App\Entity\Post(
-                id: $postItem->getAttribute('id'),
-                title: $postItem->getAttribute('title'),
-                content: $postItem->getAttribute('content'),
-                thumnail_url: $postItem->getAttribute('thumnail_url'),
-                user_id: $postItem->getAttribute('user_id'),
+                id: $postItem['id'],
+                title: $postItem['title'],
+                content: $postItem['content'],
+                thumnail_url: $postItem['thumnail_url'],
+                user_id: $postItem['user_id'],
             );
         }, $postItems);
     }

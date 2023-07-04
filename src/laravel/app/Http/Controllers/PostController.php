@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -12,6 +13,8 @@ class PostController extends Controller
         return view('posts.listAndForm', [
             'user' => $getListAndFormServiceDto->user,
             'posts' => $getListAndFormServiceDto->posts,
+            'images' => $getListAndFormServiceDto->images,
+            'tags' => $getListAndFormServiceDto->tags,
         ]);
     }
 }
