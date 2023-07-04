@@ -43,13 +43,19 @@
             <li style="height: auto; width: 250px">
                 <a href=/posts/{{ $post->id }}>{{ $post->title }}</a><br/>
                 <img style='object-fit: contain;' alt='サムネイル画像' src={{ $post->thumnail_url }} width='200' height='200'><br/>
-    {{--            @foreach($post)--}}
-    {{--                <img style='object-fit: contain;' alt='サムネイル画像' src={{ $ }} width='200' height='200'><br/>--}}
-    {{--            @endforeach--}}
-    {{--            self::get_img_elements_by_post($get_post_list_service_dto->data_linked_post->images, $post->id)--}}
-    {{--            self::get_p_elements_about_tag_by_post($get_post_list_service_dto->data_linked_post->tags, $post->id);--}}
+                @if($images[$post->id] !== '')
+                    <div>
+                    @foreach($images[$post->id] as $image)
+                        <img style='object-fit: contain;' alt='画像' src={{ $image->image_url }} width='200' height='200'><br/>
+                    @endforeach
+                    </div>
+                @endif
+                @if($tags[$post->id] !== '')
+                    @foreach($tags[$post->id] as $tag)
+                        <p>{{ $tag->name }}</p>
+                    @endforeach
+                @endif
             </li>
         @endforeach
-
     </ul>
 </div>
