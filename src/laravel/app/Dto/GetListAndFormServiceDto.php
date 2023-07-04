@@ -13,17 +13,17 @@ class GetListAndFormServiceDto
     /** @var Post[] */
     public readonly array $posts;
 
-    /** @var array{int: Image[] | string} */
+    /** @var array{int: Image[] | array} */
     public readonly array $images;
 
-    /** @var array{int: Tag[] | string} */
+    /** @var array{int: Tag[] | array} */
     public readonly array $tags;
 
     /**
      * @param User $user
      * @param array $posts
-     * @param array{int: Image[] | string} $images
-     * @param array{int: Tag[] | string} $tags
+     * @param array{int: Image[] | array} $images
+     * @param array{int: Tag[] | array} $tags
      */
     function __construct(
         User $user,

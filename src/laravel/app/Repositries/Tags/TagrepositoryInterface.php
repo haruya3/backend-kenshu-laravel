@@ -6,7 +6,7 @@ use App\Entity\Tag;
 interface TagrepositoryInterface
 {
     /**
-     * @return Tag[] | string
+     * @return Tag[]
      */
-    public function findFromPost(int $post_id): array | string;
+    public function findFromPost(int $post_id): array;
 }

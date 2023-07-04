@@ -44,18 +44,14 @@
             <li style="height: auto; width: 250px">
                 <a href=/posts/{{ $post->id }}>{{ $post->title }}</a><br/>
                 <img style='object-fit: contain;' alt='サムネイル画像' src={{ $post->thumnail_url }} width='200' height='200'><br/>
-                @if($images[$post->id] !== '')
-                    <div>
-                    @foreach($images[$post->id] as $image)
-                        <img style='object-fit: contain;' alt='画像' src={{ $image->image_url }} width='200' height='200'><br/>
-                    @endforeach
-                    </div>
-                @endif
-                @if($tags[$post->id] !== '')
-                    @foreach($tags[$post->id] as $tag)
-                        <p>{{ $tag->name }}</p>
-                    @endforeach
-                @endif
+                <div>
+                @foreach($images[$post->id] as $image)
+                    <img style='object-fit: contain;' alt='画像' src={{ $image->image_url }} width='200' height='200'><br/>
+                @endforeach
+                </div>
+                @foreach($tags[$post->id] as $tag)
+                    <p>{{ $tag->name }}</p>
+                @endforeach
             </li>
         @endforeach
     </ul>

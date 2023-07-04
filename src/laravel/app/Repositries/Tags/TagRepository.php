@@ -10,20 +10,19 @@ class TagRepository implements TagrepositoryInterface
 {
     /**
      * @param int $post_id
-     * @return Tag[] | string
+     * @return Tag[]
      */
-    public function findFromPost(int $post_id): array | string
+    public function findFromPost(int $post_id): array
     {
-        $tagItems = Post::find($post_id)->tags()->get()->toArray();
-        if(empty($tagItems)){
-            return '';
-        }
+        $tagItems = Post::find($post_id)->tags()->get();
 
-        return array_map(function ($tagItem){
+        if($tagItems === []) return [];
+
+        return $tagItems->map(function ($tagItem){
             return new Tag(
-               id: $tagItem['id'],
-               name: $tagItem['name'],
+               id: $tagItem->id,
+               name: $tagItem->name,
             );
-        }, $tagItems);
+        })->toArray();
     }
 }

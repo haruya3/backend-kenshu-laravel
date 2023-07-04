@@ -7,7 +7,7 @@ interface ImageRepositoryInterface
 {
     /**
      * @param int $post_id
-     * @return Image[] | string
+     * @return Image[]
      */
-    public function findFromPost(int $post_id): array | string;
+    public function findFromPost(int $post_id): array;
 }
