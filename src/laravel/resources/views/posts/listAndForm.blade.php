@@ -10,7 +10,7 @@
 @endif
 
 <header>
-    <img style='object-fit: contain;' alt='サムネイル画像' src={{ $user->profile_image_url }} width='100' height='100'>
+    <img style='object-fit: contain;' alt='プロフィール画像' src={{ $user->profile_image_url }} width='100' height='100'>
     <p>{{ $user->name }}さんこんにちわ</p>
 </header>
 <div>
