@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Services\Posts\CreatePostServiceInterface;
 use App\Services\Posts\GetListAndFormServiceInterface;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -16,5 +18,11 @@ class PostController extends Controller
             'images' => $getListAndFormServiceDto->images,
             'tags' => $getListAndFormServiceDto->tags,
         ]);
+    }
+
+    public function createPost(CreatePostServiceInterface $createPostService, Request $request)
+    {
+        $createPostService->run($request);
+        return redirect('/posts');
     }
 }

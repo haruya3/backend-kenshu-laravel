@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/posts', [\App\Http\Controllers\PostController::class, 'indexAndCreate'])->middleware('auth');
+Route::post('/posts', [\App\Http\Controllers\PostController::class, 'createPost'])->middleware('auth');
