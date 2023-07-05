@@ -22,4 +22,9 @@ class ImageRepository implements ImageRepositoryInterface
             );
         })->toArray();
     }
+
+    public function createByPost(\App\Entity\Image $image): bool
+    {
+        return true;
+    }
 }

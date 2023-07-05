@@ -22,7 +22,15 @@ class PostController extends Controller
 
     public function createPost(CreatePostServiceInterface $createPostService, Request $request)
     {
-        $createPostService->run($request);
+        try {
+            $createPostService->run($request);
+        }catch (\InvalidArgumentException $e){
+            abort(404);
+        }catch (\Exception $e){
+            error_log($e->getMessage());
+            abort(500);
+        }
+
         return redirect('/posts');
     }
 }

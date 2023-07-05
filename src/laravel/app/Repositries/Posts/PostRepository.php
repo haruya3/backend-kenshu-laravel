@@ -24,4 +24,9 @@ class PostRepository implements PostRepositoryInterface
             );
         })->toArray();
     }
+
+    public function create(\App\Entity\Post $post): bool
+    {
+        return true;
+    }
 }
