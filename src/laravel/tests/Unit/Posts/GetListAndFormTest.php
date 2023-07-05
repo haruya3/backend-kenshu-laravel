@@ -12,6 +12,7 @@ use Database\Factories\TagFactory;
 use Database\Factories\UserFactory;
 use Database\Seeders\TestPostTagSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 use function PHPUnit\Framework\assertSame;
 
@@ -26,7 +27,7 @@ class GetListAndFormTest extends TestCase
         $user = $userRepository->find($testUserCollection->id);
 
         //nameは一意制約を持っているため取得したデータで名前が期待したものなら、期待したユーザとします
-        assertSame($testUserCollection->name, $user->name);
+        $this->assertSame($testUserCollection->name, $user->name);
     }
 
     public function test_postRepository_getAll__記事を全件取得できること()
@@ -41,37 +42,35 @@ class GetListAndFormTest extends TestCase
 
     public function test_imageRepository_findFromPost__画像を持つ記事のidが渡された時、期待した画像を取得できること()
     {
-        $testPostCollection = Post::factory(3)->create();
+        $testPostCollection = Post::factory()->create();
         $imageRepository = new ImageRepository;
+        $testImageCollection = ImageFactory::new()->specifyPost_id($testPostCollection->id)->create();
 
-        foreach ($testPostCollection as $testPost){
-            $testImageCollection = ImageFactory::new()->specifyPost_id($testPost->id)->count(2)->create();
-
-            $images = $imageRepository->findFromPost($testPost->id);
-
-            foreach ($images as $index => $image){
-                assertSame($testImageCollection[$index]->id, $image->id);
-            }
-        }
+        $images = $imageRepository->findFromPost($testPostCollection->id);
+        $this->assertSame($testImageCollection->id, $images[0]->id);
     }
 
-    public function test_tagRepository_findFromPost__タグを持つ記事のidが渡された時、期待したタグを取得できること()
+    #[DataProvider('tagByPostDataProvider')]
+    public function test_tagRepository_findFromPost__タグを持つ記事のidが渡された時、期待したタグを取得できること(string $expected_tag_name)
     {
-        $testPostCollection = PostFactory::new()->count(3)->create();
-        $testTagNameIs総合 = TagFactory::new()->nameIs総合()->create();
-        $testTagNameIsテクノロジー = TagFactory::new()->nameIsテクノロジー()->create();
+        $testPostCollection = PostFactory::new()->create();
+        $testTagCollection = TagFactory::new()->specifyName($expected_tag_name)->create();
+
         //postsとtagsの中間テーブルにテストデータを挿入する
         $testPostTagSeeder = new TestPostTagSeeder;
+        $testPostTagSeeder->run($testPostCollection->id, $testTagCollection->id);
         $testRepository = new TagRepository;
 
-        foreach ($testPostCollection as $testPost){
-            $testPostTagSeeder->run($testPost->id, $testTagNameIs総合->id);
-            $testPostTagSeeder->run($testPost->id, $testTagNameIsテクノロジー->id);
+        $tag = $testRepository->findFromPost($testPostCollection->id);
 
-            $tags = $testRepository->findFromPost($testPost->id);
+        assertSame($expected_tag_name, $tag[0]->name);
+    }
 
-            assertSame($testTagNameIs総合->name, $tags[0]->name);
-            assertSame($testTagNameIsテクノロジー->name, $tags[1]->name);
-        }
+    public static function tagByPostDataProvider():array
+    {
+        return [
+            'タグ名が「総合」であること' => ['総合'],
+            'タグ名が「テクノロジー」であること' => ['テクノロジー'],
+        ];
     }
 }

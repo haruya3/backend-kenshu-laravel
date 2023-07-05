@@ -20,17 +20,10 @@ class TagFactory extends Factory
         ];
     }
 
-    public function nameIs総合()
+    public function specifyName(string $name)
     {
         return $this->state(fn () => [
-           'name' => '総合',
-        ]);
-    }
-
-    public function nameIsテクノロジー()
-    {
-        return $this->state(fn () => [
-            'name' => 'テクノロジー',
+           'name' => $name,
         ]);
     }
 }
