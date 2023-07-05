@@ -15,6 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\assertTrue;
 
 class GetListAndFormTest extends TestCase
 {
@@ -50,6 +51,16 @@ class GetListAndFormTest extends TestCase
         $this->assertSame($testImageCollection->id, $images[0]->id);
     }
 
+    public function test_imageRepository_findFromPost__画像を持たない記事のidが渡された時、空の配列を取得できること()
+    {
+        $testPostCollection = PostFactory::new()->create();
+        $imageRepository = new ImageRepository();
+
+        $image = $imageRepository->findFromPost($testPostCollection->id);
+
+        assertTrue(empty($image));
+    }
+
     #[DataProvider('tagByPostDataProvider')]
     public function test_tagRepository_findFromPost__タグを持つ記事のidが渡された時、期待したタグを取得できること(string $expected_tag_name)
     {
@@ -64,6 +75,16 @@ class GetListAndFormTest extends TestCase
         $tag = $testRepository->findFromPost($testPostCollection->id);
 
         assertSame($expected_tag_name, $tag[0]->name);
+    }
+
+    public function test_tagRepository_findFromPost__タグを持たない記事のidが渡された時、空の配列を取得できること()
+    {
+        $testPostCollection = PostFactory::new()->create();
+        $tagRepository = new TagRepository();
+
+        $tag = $tagRepository->findFromPost($testPostCollection->id);
+
+        assertTrue(empty($tag));
     }
 
     public static function tagByPostDataProvider():array
