@@ -8,24 +8,24 @@ use App\Repositries\Posts\ImageRepositoryInterface;
 use App\Repositries\Posts\PostRepositoryInterface;
 use App\Repositries\Tags\TagRepository;
 use App\Repositries\Tags\TagrepositoryInterface;
-use App\Repositries\User\UserRepoInterface;
+use App\Repositries\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
 class GetListAndFormService implements GetListAndFormServiceInterface
 {
-    private readonly UserRepoInterface $userRepo;
+    private readonly UserRepositoryInterface $userRepository;
     private readonly PostRepositoryInterface $postRepository;
     private readonly ImageRepositoryInterface $imageRepository;
     private readonly TagrepositoryInterface $tagrepository;
     public function __construct(
-        UserRepoInterface $userRepo,
-        PostRepositoryInterface $postRepository,
+        UserRepositoryInterface  $userRepository,
+        PostRepositoryInterface  $postRepository,
         ImageRepositoryInterface $imageRepository,
-        TagRepository $tagrepository
+        TagRepository            $tagrepository
     )
     {
         $this->postRepository = $postRepository;
-        $this->userRepo = $userRepo;
+        $this->userRepository = $userRepository;
         $this->imageRepository = $imageRepository;
         $this->tagrepository = $tagrepository;
     }
@@ -33,7 +33,7 @@ class GetListAndFormService implements GetListAndFormServiceInterface
 
     public function run(): GetListAndFormServiceDto
     {
-        $user = $this->userRepo->find(Auth::id());
+        $user = $this->userRepository->find(Auth::id());
 
         $posts = $this->postRepository->getAll();
 

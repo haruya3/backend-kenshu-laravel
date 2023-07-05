@@ -18,7 +18,7 @@ use function PHPUnit\Framework\assertSame;
 class GetListAndFormTest extends TestCase
 {
     use RefreshDatabase;
-    public function test_userRepo_find__期待したユーザを取得できること()
+    public function test_userRepository_find__期待したユーザを取得できること()
     {
         $testUserCollection = UserFactory::new()->create();
         $userRepository = new UserRepository();

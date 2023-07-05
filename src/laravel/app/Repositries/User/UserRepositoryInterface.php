@@ -3,7 +3,7 @@ namespace App\Repositries\User;
 
 use App\Models\User;
 
-interface UserRepoInterface
+interface UserRepositoryInterface
 {
     public function create(\App\Entity\User $user): User;
 }

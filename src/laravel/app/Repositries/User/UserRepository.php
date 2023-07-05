@@ -3,7 +3,7 @@ namespace App\Repositries\User;
 
 use App\Models\User;
 
-class UserRepository implements UserRepoInterface
+class UserRepository implements UserRepositoryInterface
 {
     /**
      * @param \App\Entity\User $user

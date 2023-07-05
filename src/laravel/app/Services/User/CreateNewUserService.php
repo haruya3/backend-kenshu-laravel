@@ -3,16 +3,16 @@ declare(strict_types=1);
 namespace App\Services\User;
 
 use App\Models\User;
-use App\Repositries\User\UserRepoInterface;
+use App\Repositries\User\UserRepositoryInterface;
 use App\Services\StoreFileService;
 
 class CreateNewUserService implements CreateNewUserServiceInterface
 {
-    private readonly UserRepoInterface $userRepo;
+    private readonly UserRepositoryInterface $userRepository;
 
-    public function __construct(UserRepoInterface $userRepo)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->userRepo = $userRepo;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class CreateNewUserService implements CreateNewUserServiceInterface
         $profile_image_url = StoreFileService::run($input['profile-image']);
 
         try {
-            return $this->userRepo->create(User::buildValidatedUserParams(
+            return $this->userRepository->create(User::buildValidatedUserParams(
                 name: $input['name'],
                 email: $input['email'],
                 password: $input['password'],
