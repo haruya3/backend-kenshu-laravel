@@ -18,7 +18,7 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'image_url' => 'public/image/user_profile' . fake()->name . '.png',
+            'image_url' => '/public/image/posts/' . fake()->name . '.png',
             'post_id' => Post::factory(),
         ];
     }
