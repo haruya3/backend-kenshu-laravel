@@ -49,8 +49,8 @@ class GetListAndFormTest extends TestCase
 
             $images = $imageRepository->findFromPost($testPost->id);
 
-            foreach ($images as $key => $image){
-                assertSame($testImageCollection[$key]->id, $image->id);
+            foreach ($images as $index => $image){
+                assertSame($testImageCollection[$index]->id, $image->id);
             }
         }
     }
