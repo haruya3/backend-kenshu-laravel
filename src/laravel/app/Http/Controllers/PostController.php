@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Services\Posts\CreatePostServiceInterface;
 use App\Services\Posts\GetListAndFormServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
 {
@@ -24,7 +25,7 @@ class PostController extends Controller
     {
         try {
             $createPostService->run($request);
-        }catch (\InvalidArgumentException $e){
+        }catch (ValidationException | \InvalidArgumentException $e) {
             abort(404);
         }catch (\Exception $e){
             error_log($e->getMessage());

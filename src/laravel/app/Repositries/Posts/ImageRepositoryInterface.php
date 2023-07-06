@@ -12,8 +12,8 @@ interface ImageRepositoryInterface
     public function findFromPost(int $post_id): array;
 
     /**
-     * @param Image $image
+     * @param Image[] $images
      * @return bool
      */
-    public function createByPost(Image $image): bool;
+    public function createByPost(array $images): bool;
 }

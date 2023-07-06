@@ -5,14 +5,13 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Rules\EmailValidationRule;
 use App\Models\Rules\NameValidationRules;
-use App\Models\Rules\ProfileIMageUrlValidationRules;
+use App\Models\Rules\ImageUrlValidationRules;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -60,7 +59,7 @@ class User extends Authenticatable
     use \App\Models\Rules\PasswordValidationRules;
     use NameValidationRules;
     use EmailValidationRule;
-    use ProfileIMageUrlValidationRules;
+    use ImageUrlValidationRules;
 
     /**
      * @param string $name
@@ -91,7 +90,7 @@ class User extends Authenticatable
             'name' => self::nameRules(),
             'email' => self::emailRules(),
             'password' => self::passwordRules(),
-            'profile_image_url' => self::profileImageUrlRules(),
+            'profile_image_url' => self::imageUrlRules(),
         ])->validate();
 
         return new \App\Entity\User(

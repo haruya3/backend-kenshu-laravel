@@ -3,6 +3,7 @@ namespace App\Repositries\Posts;
 
 
 use App\Entity\Post;
+
 interface PostRepositoryInterface
 {
     /**
@@ -12,7 +13,7 @@ interface PostRepositoryInterface
 
     /**
      * @param Post $post
-     * @return bool
+     * @return int
      */
-    public function create(Post $post): bool;
+    public function create(Post $post): int;
 }

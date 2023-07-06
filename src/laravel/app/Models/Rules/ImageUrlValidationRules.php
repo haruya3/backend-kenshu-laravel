@@ -1,13 +1,13 @@
 <?php
 namespace App\Models\Rules;
 
-trait ProfileIMageUrlValidationRules
+trait ImageUrlValidationRules
 {
     /**
      * @return array
      */
-    protected static function profileImageUrlRules(): array
+    protected static function imageUrlRules(): array
     {
-        return ['required', 'string', 'max: 500'];
+        return ['required', 'string'];
     }
 }

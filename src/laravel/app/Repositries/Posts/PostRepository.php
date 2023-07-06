@@ -2,8 +2,7 @@
 namespace App\Repositries\Posts;
 
 use App\Models\Post;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\QueryException;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -25,8 +24,14 @@ class PostRepository implements PostRepositoryInterface
         })->toArray();
     }
 
-    public function create(\App\Entity\Post $post): bool
+    /**
+     * @param \App\Entity\Post $post
+     * @return int
+     * @throws QueryException
+     */
+    public function create(\App\Entity\Post $post): int
     {
-        return true;
+        $createdPostModel = Post::create(get_object_vars($post));
+        return $createdPostModel->id;
     }
 }
