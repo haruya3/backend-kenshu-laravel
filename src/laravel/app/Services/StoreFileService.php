@@ -32,6 +32,6 @@ class StoreFileService implements StoreFileServiceInterface
     private static function createStorePath(string $directoryKey, string $originalName, string $originalExtention): string
     {
         $originalNameHashedWithDate = sha1(uniqid(Carbon::now() . $originalName , true));
-        return "/public/image/$directoryKey/" . $originalNameHashedWithDate . '.' . $originalExtention;
+        return "/image/$directoryKey/" . $originalNameHashedWithDate . '.' . $originalExtention;
     }
 }
