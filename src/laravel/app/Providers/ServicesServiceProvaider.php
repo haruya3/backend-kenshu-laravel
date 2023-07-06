@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repositries\Posts\ImageRepositoryInterface;
 use App\Repositries\Posts\PostRepositoryInterface;
+use App\Repositries\Posts\PostTagRepositoryInterface;
 use App\Repositries\Tags\TagrepositoryInterface;
 use App\Repositries\User\UserRepositoryInterface;
 use App\Services\Posts\CreatePostService;
@@ -50,6 +51,7 @@ class ServicesServiceProvaider extends ServiceProvider
                     $app->make(StoreFileServiceInterface::class),
                     $app->make(PostRepositoryInterface::class),
                     $app->make(ImageRepositoryInterface::class),
+                    $app->make(PostTagRepositoryInterface::class),
                 );
             }
         );
