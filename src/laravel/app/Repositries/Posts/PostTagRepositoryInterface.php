@@ -8,7 +8,7 @@ interface PostTagRepositoryInterface
 {
     /**
      * @param int $postId
-     * @param array $tagId
+     * @param array $tagIds
      * @return bool
      */
     public function create(int $postId, array $tagIds): bool;
