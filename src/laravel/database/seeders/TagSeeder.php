@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Tag;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TagSeeder extends Seeder
@@ -15,9 +14,9 @@ class TagSeeder extends Seeder
     {
         $tagNameList = ['総合', 'テクノロジー', 'モバイル', 'アプリ', 'エンタメ', 'ビューティー', 'ファッション', 'ライフスタイル', 'ビジネス', 'グルメ', 'スポーツ'];
         foreach ($tagNameList as $tagName){
-           dd( Tag::create([
+           Tag::create([
                 'name' => $tagName
-            ]));
+            ]);
         }
     }
 }
