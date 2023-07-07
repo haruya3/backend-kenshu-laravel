@@ -8,7 +8,7 @@ class OnlyExpectedTagNameRule implements Rule
 {
     public function passes($attribute, $value)
     {
-        return in_array($value, Tag::TAG_NAME_LIST);
+        return in_array($value, Tag::TAG_NAME_LIST, true);
     }
 
     public function message()
