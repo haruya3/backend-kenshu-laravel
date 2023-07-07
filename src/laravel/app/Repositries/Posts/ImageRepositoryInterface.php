@@ -10,4 +10,10 @@ interface ImageRepositoryInterface
      * @return Image[]
      */
     public function findFromPost(int $post_id): array;
+
+    /**
+     * @param Image[] $images
+     * @return bool
+     */
+    public function createByPost(array $images): bool;
 }
