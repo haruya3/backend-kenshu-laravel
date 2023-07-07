@@ -25,7 +25,9 @@ class PostController extends Controller
     {
         try {
             $createPostService->run($request);
-        }catch (ValidationException | \InvalidArgumentException $e) {
+        }catch (\InvalidArgumentException $e) {
+            abort(404);
+        }catch (ValidationException $e){
             abort(404);
         }catch (\Exception $e){
             error_log($e->getMessage());
