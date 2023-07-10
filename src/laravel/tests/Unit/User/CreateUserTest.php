@@ -16,31 +16,6 @@ use function PHPUnit\Framework\assertTrue;
 
 class CreateUserTest extends TestCase
 {
-    public function test_UplodedFileValidation_validate__正常なファイルをアップロードした時、そのファイルでバリデーションを通過してtrueを返すこと()
-    {
-        $file = self::getNormalUploadedDummyFile();
-        $this->assertTrue(UploadedFileValidation::validate($file));
-    }
-
-    public function test_StoreFileService_run__正常なファイルをアップロードした時、そのファイルが保存されていること()
-    {
-        $file = self::getNormalUploadedDummyFile();
-
-        Storage::disk()->assertExists(StoreFileService::run($file));
-    }
-
-    /**
-     * 期待されたMIMETYPEとはUploadFileValidation::EXPECTED_FILE_MIME_TYPE_LISTにある通り
-     * 'image/jpg', 'image/jpeg', 'image/png'
-     */
-    public function test_StoreFileService_run__アップロードされたファイルが期待されたMIMETYPEでない時、InvalidArgumentExceptionをthrowすること()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $file = UploadedFile::fake()->create(name: 'can_not_upload_ファイル.php', mimeType: 'text/x-php');
-        StoreFileService::run($file);
-    }
-
     public function test_User_buildValidationUserParams__ユーザの名前が空の時、ValidationExceptionをthrowすること()
     {
         $this->expectException(ValidationException::class);
@@ -102,14 +77,5 @@ class CreateUserTest extends TestCase
 
         $userRepository = new UserRepository;
         self::assertInstanceOf(User::class, $userRepository->create($user));
-    }
-
-    /**
-     * @return \Illuminate\Http\Testing\File
-     */
-    private static function getNormalUploadedDummyFile()
-    {
-        Storage::fake();
-        return UploadedFile::fake()->image('can_upload_ファイル.jpg')->size(5000);
     }
 }

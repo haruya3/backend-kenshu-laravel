@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Services\Posts;
 
+use App\Dto\StoredImageUrlAboutPostDto;
 use App\Models\Image;
 use App\Models\Post;
 use App\Models\Tag;
@@ -10,6 +11,7 @@ use App\Repositries\Posts\PostRepositoryInterface;
 use App\Repositries\Posts\PostTagRepositoryInterface;
 use App\Services\StoreFileServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -31,25 +33,20 @@ readonly class CreatePostService implements CreatePostServiceInterface
      */
     public function run(Request $request): void
     {
-        $thumnail_image = $request->file('image')[0];
-        $images = array_slice($request->file('image'), 1);
-
-        /** @throws  \InvalidArgumentException */
-        $thumnail_image_url = $this->storeFileService->run($thumnail_image, directoryKey: 'post_thumnail_image');
-        $image_urls = array_map(fn ($image) => $this->storeFileService->run($image, directoryKey: 'post_image'), $images);
+        $storedImageUrlAboutPostDto = $this->storeUploadedFile($request->file('image'));
 
         $post = Post::buildValidatedPostEntity(
             title: $request['title'],
             content: $request['content'],
-            thumnail_image_url: $thumnail_image_url,
+            thumnail_image_url: $storedImageUrlAboutPostDto->thumnail_image_url,
             user_id: Auth::id(),
         );
 
         try {
             DB::beginTransaction();
             $createdPostId = $this->postRepository->create($post);
-            $this->executeInsertIntoImageTable($createdPostId, $image_urls);
-            $this->executeInsertIntoPostTagTable($createdPostId, $request['tag']);
+            if(isset($storedImageUrlAboutPostDto->image_urls)) $this->executeInsertIntoImageTable($createdPostId, $storedImageUrlAboutPostDto->image_urls);
+            if(isset($request['tag'])) $this->executeInsertIntoPostTagTable($createdPostId, $request['tag']);
             DB::commit();
         } catch (ValidationException $e){
             DB::rollBack();
@@ -95,5 +92,27 @@ readonly class CreatePostService implements CreatePostServiceInterface
         $this->postTagRepository->create($createdPostId,$tagIds);
 
         return true;
+    }
+
+    /**
+     * @param array<UploadedFile> $uploadedImages
+     * @return StoredImageUrlAboutPostDto
+     */
+    private function storeUploadedFile(array $uploadedImages): StoredImageUrlAboutPostDto
+    {
+        $thumnail_image = $uploadedImages[0];
+        /** @throws  \InvalidArgumentException */
+        $thumnail_image_url = $this->storeFileService->run($thumnail_image, directoryKey: 'post_thumnail_image');
+
+        $image_urls = null;
+        if(isset($uploadedImages[1])){
+            $images = array_slice($uploadedImages, 1);
+            $image_urls = array_map(fn ($image) => $this->storeFileService->run($image, directoryKey: 'post_image'), $images);
+        }
+
+        return new StoredImageUrlAboutPostDto(
+            thumnail_image_url: $thumnail_image_url,
+            image_urls: $image_urls,
+        );
     }
 }
