@@ -22,6 +22,14 @@ class UploadedFileTest extends TestCase
         Storage::disk()->assertExists((new StoreFileService)->run($file));
     }
 
+    public function test_StoreFileService_run__第二引数を指定した時、指定した名前のディレクトリにファイルが保存されること()
+    {
+        $file = self::getNormalUploadedDummyFile();
+
+        $commonDirectory = '/image';
+        $this->assertSame($commonDirectory . '/test', dirname((new StoreFileService())->run($file, 'test')));
+    }
+
     /**
      * 期待されたMIMETYPEとはUploadFileValidation::EXPECTED_FILE_MIME_TYPE_LISTにある通り
      * 'image/jpg', 'image/jpeg', 'image/png'
