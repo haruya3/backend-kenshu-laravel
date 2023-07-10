@@ -20,43 +20,46 @@ class CreatePostTest extends TestCase
     public function test_PostRepository_create__期待したPostオブジェクトが渡された時、postsテーブルにレコードを作成できていること()
     {
         $user = UserFactory::new()->create();
-        $testPost = Post::buildValidatedPostEntity(
+        $expectedPost = Post::buildValidatedPostEntity(
             title: 'test',
             content: 'testです',
             thumnail_image_url: '/public/post_thumnail_image/test.png',
             user_id:  $user->id,
         );
+        $postRepository = new PostRepository();
 
-        (new PostRepository)->create($testPost);
+        $postRepository->create($expectedPost);
 
         $actualPostTitle = Post::all()->first()->title;
-        $this->assertSame($testPost->title, $actualPostTitle);
+        $this->assertSame($expectedPost->title, $actualPostTitle);
     }
 
     public function test_ImageRepository_createByPost__期待したImageオブジェクトが渡された時、imagesテーブルにレコードを作成できていること()
     {
         $testPost = PostFactory::new()->create();
-        $testImage = Image::buildValidatedImageEntity(
+        $expectedImage = Image::buildValidatedImageEntity(
             image_url: 'post_image',
             post_id: $testPost->id,
         );
+        $imageRepository = new ImageRepository();
 
-        (new ImageRepository())->createByPost(array($testImage));
+        $imageRepository->createByPost(array($expectedImage));
 
         $actualImageUrl = Image::all()->first()->image_url;
-        $this->assertSame($testImage->image_url, $actualImageUrl);
+        $this->assertSame($expectedImage->image_url, $actualImageUrl);
     }
 
     public function test_PostTagRepository_create__期待した記事のidとタグのidが渡された時、post_tagテーブルにレコードを作成できていること()
     {
         //テスト用データベースにタグテーブルの作成
         TagSeeder::run();
-        $testTag = Tag::all()->first();
-        $testPost = PostFactory::new()->create();
+        $expectedTag = Tag::all()->first();
+        $expetedPost = PostFactory::new()->create();
+        $postTagRepository = new PostTagRepository();
 
-        (new PostTagRepository)->create($testPost->id, array($testTag->id));
+        $postTagRepository->create($expetedPost->id, array($expectedTag->id));
 
         $actualTagId = DB::select('select tag_id from post_tag')[0]->tag_id;
-        $this->assertSame($testTag->id, $actualTagId);
+        $this->assertSame($expectedTag->id, $actualTagId);
     }
 }
