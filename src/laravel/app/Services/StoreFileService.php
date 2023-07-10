@@ -17,7 +17,16 @@ class StoreFileService implements StoreFileServiceInterface
     {
         /** @throws \InvalidArgumentException */
         UploadedFileValidation::validate($uploadedFile);
+        return self::executeStoreFile($uploadedFile, $directoryKey);
+    }
 
+    /**
+     * @param UploadedFile $uploadedFile
+     * @param string $directoryKey
+     * @return string
+     */
+    private static function executeStoreFile(UploadedFile $uploadedFile, string $directoryKey): string
+    {
         $storePath = self::createStorePath($directoryKey, $uploadedFile->getClientOriginalName(), $uploadedFile->getClientOriginalExtension());
         $uploadedFile->storeAs($storePath);
 
