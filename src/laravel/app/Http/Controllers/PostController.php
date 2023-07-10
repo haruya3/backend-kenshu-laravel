@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dto\GetDetailPageServiceDto;
 use App\Exceptions\CustomExceptions\SpecifiedPostIdIsNotExistError;
 use App\Policy\PostPolicy;
 use App\Services\Posts\CreatePostServiceInterface;

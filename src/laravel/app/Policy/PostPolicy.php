@@ -1,6 +1,7 @@
 <?php
-namespace App\Policy;
+declare(strict_types=1);
 
+namespace App\Policy;
 
 use App\Entity\Post;
 use App\Entity\User;
