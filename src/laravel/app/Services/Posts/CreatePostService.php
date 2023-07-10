@@ -45,8 +45,8 @@ readonly class CreatePostService implements CreatePostServiceInterface
         try {
             DB::beginTransaction();
             $createdPostId = $this->postRepository->create($post);
-            $this->executeInsertIntoImageTable($createdPostId, $storedImageUrlAboutPostDto->image_urls);
-            $this->executeInsertIntoPostTagTable($createdPostId, $request['tag']);
+            if(isset($storedImageUrlAboutPostDto->image_urls)) $this->executeInsertIntoImageTable($createdPostId, $storedImageUrlAboutPostDto->image_urls);
+            if(isset($request['tag'])) $this->executeInsertIntoPostTagTable($createdPostId, $request['tag']);
             DB::commit();
         } catch (ValidationException $e){
             DB::rollBack();
@@ -101,11 +101,14 @@ readonly class CreatePostService implements CreatePostServiceInterface
     private function storeUploadedFile(array $uploadedImages): StoredImageUrlAboutPostDto
     {
         $thumnail_image = $uploadedImages[0];
-        $images = array_slice($uploadedImages, 1);
-
         /** @throws  \InvalidArgumentException */
         $thumnail_image_url = $this->storeFileService->run($thumnail_image, directoryKey: 'post_thumnail_image');
-        $image_urls = array_map(fn ($image) => $this->storeFileService->run($image, directoryKey: 'post_image'), $images);
+
+        $image_urls = null;
+        if(isset($uploadedImages[1])){
+            $images = array_slice($uploadedImages, 1);
+            $image_urls = array_map(fn ($image) => $this->storeFileService->run($image, directoryKey: 'post_image'), $images);
+        }
 
         return new StoredImageUrlAboutPostDto(
             thumnail_image_url: $thumnail_image_url,

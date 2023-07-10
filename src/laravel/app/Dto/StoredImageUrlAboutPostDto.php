@@ -5,10 +5,10 @@ readonly class StoredImageUrlAboutPostDto
 {
     /**
      * @param string $thumnail_image_url
-     * @param array<string> $image_urls
+     * @param array<string> | null $image_urls
      */
     public function __construct(
         public string $thumnail_image_url,
-        public array $image_urls,
+        public array | null $image_urls,
     ){}
 }
