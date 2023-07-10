@@ -3,6 +3,7 @@ namespace App\Repositries\Posts;
 
 
 use App\Entity\Post;
+use App\Exceptions\CustomExceptions\SpecifiedPostIdIsNotExistError;
 
 interface PostRepositoryInterface
 {
@@ -16,4 +17,11 @@ interface PostRepositoryInterface
      * @return int
      */
     public function create(Post $post): int;
+
+    /**
+     * @param int $id
+     * @return Post
+     * @throws SpecifiedPostIdIsNotExistError
+     */
+    public function find(int $id): Post;
 }
