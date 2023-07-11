@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Dto\GetEditPageServiceDto;
 use App\Exceptions\CustomExceptions\SpecifiedPostIdIsNotExistError;
 use App\Policy\PostPolicy;
 use App\Services\Posts\CreatePostServiceInterface;
 use App\Services\Posts\GetDetailPageServiceInterface;
+use App\Services\Posts\GetEditPageServiceInterface;
 use App\Services\Posts\GetListAndFormServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,4 +57,17 @@ class PostController extends Controller
             abort(404);
         }
     }
+
+    public function getEditPage(GetEditPageServiceInterface $getEditPageService, string $id)
+    {
+        try {
+            $getEditPageServiceDto = $getEditPageService->run(intval($id));
+            return view('posts.edit',[
+               'post' => $getEditPageServiceDto->post,
+            ]);
+        }catch (SpecifiedPostIdIsNotExistError $e){
+            abort(404);
+        }
+    }
+
 }
