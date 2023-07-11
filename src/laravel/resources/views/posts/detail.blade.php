@@ -4,8 +4,8 @@
 </div>
 @if($isOwnPost)
     <div>
-        <a href='/posts/{$post_xss_escaped->id}/edit'>編集画面</a>
-        <form action="/posts/{$post_xss_escaped->id}" method="post">
+        <a href='/posts/{{ $post->id }}/edit'>編集画面</a>
+        <form action="/posts/{{ $post->id }}" method="post">
             @csrf
             <input name='_method' hidden value="DELETE">
             <button type="submit">削除</button>
