@@ -24,4 +24,11 @@ interface PostRepositoryInterface
      * @throws SpecifiedPostIdIsNotExistError
      */
     public function find(int $id): Post;
+
+    /**
+     * @param Post $post
+     * @return mixed
+     * @throws SpecifiedPostIdIsNotExistError
+     */
+    public function update(Post $post);
 }

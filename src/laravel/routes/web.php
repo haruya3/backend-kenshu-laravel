@@ -18,4 +18,5 @@ Route::middleware(['auth'])->group( function () {
     Route::post('/posts', [\App\Http\Controllers\PostController::class, 'createPost']);
     Route::get('posts/{id}', [\App\Http\Controllers\PostController::class, 'getDetailPage']);
     Route::get('posts/{id}/edit', [\App\Http\Controllers\PostController::class, 'getEditPage']);
+    Route::put('/posts/{id}', [\App\Http\Controllers\PostController::class, 'update']);
 });

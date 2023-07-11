@@ -2,7 +2,6 @@
 namespace App\Services\Posts;
 
 use App\Dto\GetEditPageServiceDto;
-use App\Entity\Post;
 use App\Repositries\Posts\PostRepositoryInterface;
 
 readonly class GetEditPageService implements GetEditPageServiceInterface

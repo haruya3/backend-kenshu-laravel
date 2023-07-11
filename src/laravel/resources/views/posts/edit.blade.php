@@ -1,6 +1,7 @@
 <div>
-    <form action="/posts/{{ $post->id }}/edit" method='post' enctype="multipart/form-data">
-        @method('put')
+    <form action="/posts/{{ $post->id }}" method='post' enctype="multipart/form-data">
+        @method('patch')
+        @csrf
         <input name='_method' hidden value='PUT'>
         <label>
             タイトル<br/>

@@ -16,6 +16,8 @@ use App\Services\Posts\GetEditPageService;
 use App\Services\Posts\GetEditPageServiceInterface;
 use App\Services\Posts\GetListAndFormServiceInterface;
 use App\Services\Posts\GetListAndFormService;
+use App\Services\Posts\UpdateService;
+use App\Services\Posts\UpdateServiceInterface;
 use App\Services\StoreFileService;
 use App\Services\StoreFileServiceInterface;
 use App\Services\User\CreateNewUserService;
@@ -74,6 +76,14 @@ class ServicesServiceProvaider extends ServiceProvider
         $this->app->bind(GetEditPageServiceInterface::class,
             function ($app){
                 return new GetEditPageService(
+                    $app->make(PostRepositoryInterface::class),
+                );
+            }
+        );
+
+        $this->app->bind(UpdateServiceInterface::class,
+            function ($app){
+                return new UpdateService(
                     $app->make(PostRepositoryInterface::class),
                 );
             }
