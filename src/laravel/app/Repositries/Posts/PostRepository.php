@@ -6,6 +6,7 @@ namespace App\Repositries\Posts;
 use App\Exceptions\CustomExceptions\SpecifiedPostIdIsNotExistError;
 use App\Models\Post;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -55,5 +56,19 @@ class PostRepository implements PostRepositoryInterface
             thumnail_url: $postModel->thumnail_url,
             user_id: $postModel->user_id,
         );
+    }
+
+    /**
+     * @param \App\Entity\Post $post
+     * @throws SpecifiedPostIdIsNotExistError
+     */
+    public function update(\App\Entity\Post $post)
+    {
+        $result = Post::where('id', $post->id)->update([
+           'title' => $post->title,
+           'content' => $post->content,
+        ]);
+
+        if($result === 0) throw new SpecifiedPostIdIsNotExistError('post of $id is not exist');
     }
 }

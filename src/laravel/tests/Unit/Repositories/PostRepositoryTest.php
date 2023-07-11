@@ -59,4 +59,41 @@ class PostRepositoryTest extends TestCase
 
         $postRepository->find($notExistId);
     }
+
+    public function test_update__存在するpostのidが渡された時、そのpostがアップデートされていること()
+    {
+        $testPostCollection = PostFactory::new()->create();
+        //例としてタイトルの更新をテストします
+        $expectedTitle = 'title';
+        $testPost = new \App\Entity\Post(
+            id: $testPostCollection->id,
+            title:  $expectedTitle,
+            content: $testPostCollection->content,
+            thumnail_url: $testPostCollection->thumnail_url,
+            user_id: $testPostCollection->user_id,
+        );
+        $postRepository = new PostRepository();
+
+        $postRepository->update($testPost);
+        $actualTitle = Post::find($testPostCollection->id)->title;
+
+        $this->assertSame($expectedTitle, $actualTitle);
+    }
+
+    public function test_update__存在しないpostのidが渡された時、SpecifiedPostIdIsNotExistErrorがthrowされること()
+    {
+        $this->expectException(SpecifiedPostIdIsNotExistError::class);
+
+        $notExistId = 1;
+        $testPost = new \App\Entity\Post(
+            id: $notExistId,
+            title:  'test',
+            content: 'test',
+            thumnail_url: '',
+            user_id: 0,
+        );
+        $postRepository = new PostRepository();
+
+        $postRepository->update($testPost);
+    }
 }

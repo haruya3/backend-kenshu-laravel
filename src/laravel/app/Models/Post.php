@@ -78,4 +78,38 @@ class Post extends Model
             user_id: $user_id,
         );
     }
+
+    /**
+     * @param int $id
+     * @param string $title
+     * @param string $content
+     * @param int $user_id
+     * @return \App\Entity\Post
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public static function buildValidatedPostEntityForUpdate(
+        int $id,
+        string $title,
+        string $content,
+        int $user_id,
+    ): \App\Entity\Post
+    {
+        $nonValidatedPostParams = [
+            'title' => $title,
+            'content' => $content,
+        ];
+
+        $validatedPostParams = Validator::make($nonValidatedPostParams,[
+            'title' => self::titleRules(),
+            'content' => self::contentRules(),
+        ])->validate();
+
+        return new \App\Entity\Post(
+            id: $id,
+            title: $validatedPostParams['title'],
+            content: $validatedPostParams['content'],
+            thumnail_url: '',
+            user_id: $user_id,
+        );
+    }
 }

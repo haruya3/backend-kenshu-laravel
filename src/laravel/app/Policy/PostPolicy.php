@@ -13,7 +13,7 @@ class PostPolicy
      * @param Post $post
      * @return bool
      */
-    public function update(int $now_user_id, int $post_own_user_id)
+    public function canUpdate(int $now_user_id, int $post_own_user_id)
     {
         return $now_user_id === $post_own_user_id;
     }
