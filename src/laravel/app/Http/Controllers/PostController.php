@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Dto\GetEditPageServiceDto;
+use App\Exceptions\CustomExceptions\NowUserCanNotUpdateAndDeletePostError;
 use App\Exceptions\CustomExceptions\SpecifiedPostIdIsNotExistError;
 use App\Policy\PostPolicy;
 use App\Services\Posts\CreatePostServiceInterface;
@@ -49,7 +50,7 @@ class PostController extends Controller
                 'post' => $getDetailPageServiceDto->post,
                 'images' => $getDetailPageServiceDto->images,
                 'tags' => $getDetailPageServiceDto->tags,
-                'isOwnPost' => PostPolicy::new()->update(Auth::id(), $getDetailPageServiceDto->post->user_id),
+                'isOwnPost' => PostPolicy::new()->canUpdate(Auth::id(), $getDetailPageServiceDto->post->user_id),
             ]);
         }catch (SpecifiedPostIdIsNotExistError $e){
             abort(404);
@@ -60,9 +61,12 @@ class PostController extends Controller
     {
         try {
             $getEditPageServiceDto = $getEditPageService->run(intval($id));
-            return view('posts.edit',[
-               'post' => $getEditPageServiceDto->post,
+            return view('posts.edit', [
+                'post' => $getEditPageServiceDto->post,
             ]);
+        }catch (NowUserCanNotUpdateAndDeletePostError $e){
+            error_log($e->getMessage());
+            abort(403);
         }catch (SpecifiedPostIdIsNotExistError $e){
             abort(404);
         }
@@ -73,9 +77,10 @@ class PostController extends Controller
         try {
             $updateService->run($request, $id);
             return redirect("posts/$id");
-        }catch (ValidationException $e){
-            abort(404);
-        }catch (SpecifiedPostIdIsNotExistError $e){
+        }catch (NowUserCanNotUpdateAndDeletePostError $e){
+            error_log($e->getMessage());
+            abort(403);
+        }catch (ValidationException | SpecifiedPostIdIsNotExistError $e){
             abort(404);
         }
     }
