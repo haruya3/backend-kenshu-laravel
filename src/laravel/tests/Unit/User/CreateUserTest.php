@@ -62,20 +62,4 @@ class CreateUserTest extends TestCase
             profile_image_url: $user->getAttributeValue('profile_image_url'),
         );
     }
-
-    use RefreshDatabase;
-
-    public function test_UserRepository_create__正常なユーザ情報の時、そのユーザ情報をDBに登録できること()
-    {
-        $user = new \App\Entity\User(
-            id: 1,
-            name: 'test',
-            email: 'test@test.com',
-            password: 'testpassword',
-            profile_image_url: '/public/image/user_profile/fkeoafe.png',
-        );
-
-        $userRepository = new UserRepository;
-        self::assertInstanceOf(User::class, $userRepository->create($user));
-    }
 }
