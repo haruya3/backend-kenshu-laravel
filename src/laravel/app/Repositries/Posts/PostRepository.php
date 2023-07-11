@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Repositries\Posts;
 
+use App\Exceptions\CustomExceptions\SpecifiedPostIdIsNotExistError;
 use App\Models\Post;
 use Illuminate\Database\QueryException;
 
@@ -33,5 +36,24 @@ class PostRepository implements PostRepositoryInterface
     {
         $createdPostModel = Post::create(get_object_vars($post));
         return $createdPostModel->id;
+    }
+
+    /**
+     * @param int $id
+     * @return \App\Entity\Post
+     * @throws SpecifiedPostIdIsNotExistError
+     */
+    public function find(int $id): \App\Entity\Post
+    {
+        $postModel = Post::find($id);
+        if(is_null($postModel)) throw new SpecifiedPostIdIsNotExistError("post of $id is not exist");
+
+        return new \App\Entity\Post(
+            id: $postModel->id,
+            title: $postModel->title,
+            content: $postModel->content,
+            thumnail_url: $postModel->thumnail_url,
+            user_id: $postModel->user_id,
+        );
     }
 }
