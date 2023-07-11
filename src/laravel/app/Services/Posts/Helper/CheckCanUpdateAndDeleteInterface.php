@@ -10,5 +10,5 @@ interface CheckCanUpdateAndDeleteInterface
      * @param int $post_own_user_id
      * @throws NowUserCanNotUpdateAndDeletePostError
      */
-    public function run(int $user_id, int $post_own_user_id);
+    public function run(int $user_id, int $post_own_user_id): void;
 }
