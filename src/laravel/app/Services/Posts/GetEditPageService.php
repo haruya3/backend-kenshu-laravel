@@ -5,6 +5,7 @@ use App\Dto\GetEditPageServiceDto;
 use App\Exceptions\CustomExceptions\NowUserCanNotUpdateAndDeletePostError;
 use App\Policy\PostPolicy;
 use App\Repositries\Posts\PostRepositoryInterface;
+use App\Services\Posts\Helper\CheckCanUpdateAndDeleteInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\CustomExceptions\SpecifiedPostIdIsNotExistError;
 
@@ -12,6 +13,7 @@ readonly class GetEditPageService implements GetEditPageServiceInterface
 {
     public function __construct(
         private PostRepositoryInterface $postRepository,
+        private CheckCanUpdateAndDeleteInterface $checkCanUpdateAndDelete,
     ){}
 
     /**
@@ -23,9 +25,11 @@ readonly class GetEditPageService implements GetEditPageServiceInterface
      */
     public function run(int $post_id): GetEditPageServiceDto
     {
-        $user_id = Auth::id();
-        $post = $this->postRepository->find($post_id);
-        if(!PostPolicy::new()->canUpdateAndDelete($user_id, $post->user_id)) throw new NowUserCanNotUpdateAndDeletePostError("now user can not update and delete post. user of user id:$user_id is attempt to update post of post id:$post_id");
+        /** @throws NowUserCanNotUpdateAndDeletePostError */
+        $this->checkCanUpdateAndDelete->run(
+            user_id: Auth::id(),
+            post_own_user_id: $this->postRepository->find($post_id)->user_id,
+        );
 
         $post = $this->postRepository->find($post_id);
         return new GetEditPageServiceDto(

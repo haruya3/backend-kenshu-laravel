@@ -18,6 +18,8 @@ use App\Services\Posts\GetEditPageService;
 use App\Services\Posts\GetEditPageServiceInterface;
 use App\Services\Posts\GetListAndFormServiceInterface;
 use App\Services\Posts\GetListAndFormService;
+use App\Services\Posts\Helper\CheckCanUpdateAndDelete;
+use App\Services\Posts\Helper\CheckCanUpdateAndDeleteInterface;
 use App\Services\Posts\UpdateService;
 use App\Services\Posts\UpdateServiceInterface;
 use App\Services\StoreFileService;
@@ -34,6 +36,7 @@ class ServicesServiceProvaider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(StoreFileServiceInterface::class, StoreFileService::class);
+        $this->app->bind(CheckCanUpdateAndDeleteInterface::class, CheckCanUpdateAndDelete::class);
 
         $this->app->bind(
             CreateNewUserServiceInterface::class,
@@ -79,6 +82,7 @@ class ServicesServiceProvaider extends ServiceProvider
             function ($app){
                 return new GetEditPageService(
                     $app->make(PostRepositoryInterface::class),
+                    $app->make(CheckCanUpdateAndDeleteInterface::class),
                 );
             }
         );
@@ -87,6 +91,7 @@ class ServicesServiceProvaider extends ServiceProvider
             function ($app){
                 return new UpdateService(
                     $app->make(PostRepositoryInterface::class),
+                    $app->make(CheckCanUpdateAndDeleteInterface::class),
                 );
             }
         );
@@ -95,6 +100,7 @@ class ServicesServiceProvaider extends ServiceProvider
             function ($app){
                 return new DeleteService(
                     $app->make(PostRepositoryInterface::class),
+                    $app->make(CheckCanUpdateAndDeleteInterface::class),
                 );
             }
         );
