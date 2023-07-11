@@ -6,6 +6,7 @@
     <div>
         <a href='/posts/{{ $post->id }}/edit'>編集画面</a>
         <form action="/posts/{{ $post->id }}" method="post">
+            @method('delete')
             @csrf
             <input name='_method' hidden value="DELETE">
             <button type="submit">削除</button>

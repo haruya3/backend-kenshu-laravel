@@ -96,4 +96,25 @@ class PostRepositoryTest extends TestCase
 
         $postRepository->update($testPost);
     }
+
+    public function test_delete__存在するpostのidが渡された時、削除されること()
+    {
+        $testPostCollection = PostFactory::new()->create();
+        $postRepository = new PostRepository();
+
+        $postRepository->delete($testPostCollection->id);
+
+        $actualPost = Post::find($testPostCollection->id);
+        $this->assertTrue(is_null($actualPost));
+    }
+
+    public function test_delete__存在しないpostのidが渡された時、SpecifiedPostIdIsNotExistErrorがthrowされること()
+    {
+        $this->expectException(SpecifiedPostIdIsNotExistError::class);
+
+        $notExistId = 1;
+        $postRepository = new PostRepository();
+
+        $postRepository->delete($notExistId);
+    }
 }

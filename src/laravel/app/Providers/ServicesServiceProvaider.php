@@ -10,6 +10,8 @@ use App\Repositries\Tags\TagrepositoryInterface;
 use App\Repositries\User\UserRepositoryInterface;
 use App\Services\Posts\CreatePostService;
 use App\Services\Posts\CreatePostServiceInterface;
+use App\Services\Posts\DeleteService;
+use App\Services\Posts\DeleteServiceInterface;
 use App\Services\Posts\GetDetailPageService;
 use App\Services\Posts\GetDetailPageServiceInterface;
 use App\Services\Posts\GetEditPageService;
@@ -84,6 +86,14 @@ class ServicesServiceProvaider extends ServiceProvider
         $this->app->bind(UpdateServiceInterface::class,
             function ($app){
                 return new UpdateService(
+                    $app->make(PostRepositoryInterface::class),
+                );
+            }
+        );
+
+        $this->app->bind(DeleteServiceInterface::class,
+            function ($app){
+                return new DeleteService(
                     $app->make(PostRepositoryInterface::class),
                 );
             }

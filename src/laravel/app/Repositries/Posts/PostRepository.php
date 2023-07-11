@@ -71,4 +71,16 @@ class PostRepository implements PostRepositoryInterface
 
         if($result === 0) throw new SpecifiedPostIdIsNotExistError('post of $id is not exist');
     }
+
+    /**
+     * @param int $id
+     * @return void
+     * @throws SpecifiedPostIdIsNotExistError
+     */
+    public function delete(int $id)
+    {
+        $result = Post::where('id', $id)->delete($id);
+
+        if($result === 0) throw new SpecifiedPostIdIsNotExistError('post of $id is not exist');
+    }
 }

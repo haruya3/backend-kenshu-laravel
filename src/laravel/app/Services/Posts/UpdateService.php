@@ -26,7 +26,8 @@ readonly class UpdateService implements UpdateServiceInterface
     public function run(Request $request, string $post_id)
     {
         $user_id = Auth::id();
-        if(!PostPolicy::new()->canUpdate($user_id, $post_id)) throw new NowUserCanNotUpdateAndDeletePostError("now user can not update and delete post. $user_id is attempt to update $post_id");
+        $post = $this->postRepository->find($post_id);
+        if(!PostPolicy::new()->canUpdateAndDelete($user_id, $post->user_id)) throw new NowUserCanNotUpdateAndDeletePostError("now user can not update and delete post. $user_id is attempt to update $post_id");
 
         $post = \App\Models\Post::buildValidatedPostEntityForUpdate(
             id: $post_id,
