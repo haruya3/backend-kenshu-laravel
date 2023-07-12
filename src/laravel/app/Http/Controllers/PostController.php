@@ -8,6 +8,7 @@ use App\Exceptions\CustomExceptions\NowUserCanNotUpdateAndDeletePostError;
 use App\Exceptions\CustomExceptions\SpecifiedPostIdIsNotExistError;
 use App\Policy\PostPolicy;
 use App\Services\Posts\CreatePostServiceInterface;
+use App\Services\Posts\DeleteServiceInterface;
 use App\Services\Posts\GetDetailPageServiceInterface;
 use App\Services\Posts\GetEditPageServiceInterface;
 use App\Services\Posts\GetListAndFormServiceInterface;
@@ -50,7 +51,7 @@ class PostController extends Controller
                 'post' => $getDetailPageServiceDto->post,
                 'images' => $getDetailPageServiceDto->images,
                 'tags' => $getDetailPageServiceDto->tags,
-                'isOwnPost' => PostPolicy::new()->canUpdate(Auth::id(), $getDetailPageServiceDto->post->user_id),
+                'isOwnPost' => PostPolicy::new()->canUpdateAndDelete(Auth::id(), $getDetailPageServiceDto->post->user_id),
             ]);
         }catch (SpecifiedPostIdIsNotExistError $e){
             abort(404);
@@ -83,5 +84,18 @@ class PostController extends Controller
         }catch (ValidationException | SpecifiedPostIdIsNotExistError $e){
             abort(404);
         }
+    }
+
+    public function delete(DeleteServiceInterface $deleteService, string $id)
+    {
+        try {
+            $deleteService->run(intval($id));
+        }catch (NowUserCanNotUpdateAndDeletePostError $e){
+            error_log($e->getMessage());
+            abort(403);
+        }catch (SpecifiedPostIdIsNotExistError $e){
+            abort(404);
+        }
+        return redirect('/posts');
     }
 }
